@@ -1,20 +1,29 @@
 import 'package:flutter/material.dart';
+// import 'package:sivi/Dashboard.dart';
+import 'package:sivi/conversation.dart';
+import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
+
+
 
 void main() {
-  runApp(const MainApp());
+  runApp( 
+      DevicePreview(
+      enabled: !kReleaseMode,
+      builder:(context) => MyApp(),
+    )
+    );
 }
-
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
+    return MaterialApp(
+      title: 'Flutter Demo Home Page',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
+      home: ConversationPage(),
     );
   }
 }
+
