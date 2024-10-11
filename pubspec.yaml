@@ -11,7 +11,10 @@ dependencies:
   flutter:
     sdk: flutter
   http: ^1.2.2
+  pretty_diff_text: ^2.0.0
+  shared_preferences: ^2.3.2
   speech_to_text: ^7.0.0
+  speed_dial_fab: ^2.3.0
 
 dev_dependencies:
   flutter_test:
@@ -19,4 +22,7 @@ dev_dependencies:
   flutter_lints: ^3.0.0
 
 flutter:
+  assets:
+    - images/
   uses-material-design: true
+
