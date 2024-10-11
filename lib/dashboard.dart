@@ -62,7 +62,7 @@ class _DashboardState extends State<Dashboard> {
                 chats.clear();
                 setState(() {});
               },
-              icon: const Icon(Icons.clean_hands),
+              icon: const Icon(Icons.delete),
               color: Colors.white,
             ),
           ],
@@ -92,7 +92,11 @@ class _DashboardState extends State<Dashboard> {
             );
           },
         ),
-        floatingActionButton: SpeedDialFabWidget(secondaryIconsText: const [
+        floatingActionButton: SpeedDialFabWidget(
+          primaryIconCollapse: Icons.chat,
+           primaryIconExpand  : Icons.chat,
+          
+          secondaryIconsText: const [
           "Restaurant",
           "Vehicle",
           "Hotel",
