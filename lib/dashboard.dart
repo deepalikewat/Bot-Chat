@@ -109,14 +109,14 @@ class _DashboardState extends State<Dashboard> {
           "Vehicle",
           "Hotel",
           "Support",
-          "Flight"
+         
         ], secondaryIconsList: const [
           Icons.people,
           Icons.restaurant_rounded,
           Icons.car_rental,
           Icons.hotel,
           Icons.support_agent,
-          Icons.flight
+          
         ], secondaryIconsOnPress: [
           () {
             goChat("Intro");
@@ -133,9 +133,7 @@ class _DashboardState extends State<Dashboard> {
           () {
             goChat("Support");
           },
-          () {
-            goChat("Flight");
-          }
+          
         ]));
   }
 }
