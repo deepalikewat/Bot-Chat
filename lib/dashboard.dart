@@ -66,9 +66,16 @@ class _DashboardState extends State<Dashboard> {
               color: Colors.white,
             ),
           ],
-          leadingWidth: 0,
+          leading:Container(
+            margin:EdgeInsets.all(10) ,
+            child: Image.asset("images/logo.png",
+            ),
+          ),
+          
+          centerTitle: true,
           title: const Text(
             'Dashboard',
+            
             style: TextStyle(
               color: Colors.white,
             ),
@@ -97,18 +104,23 @@ class _DashboardState extends State<Dashboard> {
            primaryIconExpand  : Icons.chat,
           
           secondaryIconsText: const [
+          "Intro",
           "Restaurant",
           "Vehicle",
           "Hotel",
           "Support",
           "Flight"
         ], secondaryIconsList: const [
+          Icons.people,
           Icons.restaurant_rounded,
           Icons.car_rental,
           Icons.hotel,
           Icons.support_agent,
           Icons.flight
         ], secondaryIconsOnPress: [
+          () {
+            goChat("Intro");
+          },
           () {
             goChat("Restaurant");
           },

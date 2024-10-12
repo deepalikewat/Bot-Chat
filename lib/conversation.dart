@@ -66,7 +66,8 @@ class _ConversationPageState extends State<ConversationPage> {
         });
       });
     } else {
-      print(
+     try {
+       print(
           "http://my-json-server.typicode.com/deepalikewat/demoapi1/${widget.titlex}");
       final rsdata = await http.get(Uri.parse(
           "http://my-json-server.typicode.com/deepalikewat/demoapi1/${widget.titlex}"));
@@ -88,6 +89,26 @@ class _ConversationPageState extends State<ConversationPage> {
           messages.add(tmpmsg[0]);
         }
       });
+       
+     } catch (e) {
+      showDialog(context: context, builder:(context) => 
+       AlertDialog(
+       
+        title:Icon(Icons.error_outline),
+        content: const Text('Network issue ...',
+        
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: Colors.red,
+
+        ),
+        ),
+
+        
+       )
+      ,);
+       
+     }
     }
   }
 
@@ -176,28 +197,22 @@ class _ConversationPageState extends State<ConversationPage> {
       return;
     }
 
-await showDialog(
-    context: context,
-    builder: (context) {
-      return CupertinoAlertDialog(
-        title: const Text('Success!'),
-        content: const Text('Your data has been successfully saved.'),
-        actions:[
-         
-          TextButton(
-            onPressed: () {
-                Navigator.pop(context); //close Dialog
-            },
-            child: const Text('OK'),
-          )
-        ],
-      );
-    });
-
-
-
-
-
+    await showDialog(
+        context: context,
+        builder: (context) {
+          return CupertinoAlertDialog(
+            title: const Text('Success!'),
+            content: const Text('Your data has been successfully saved.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context); //close Dialog
+                },
+                child: const Text('OK'),
+              )
+            ],
+          );
+        });
 
     Navigator.pop(context);
   }
@@ -212,94 +227,71 @@ await showDialog(
 
       tmpmsg = jsonDecode(tmpDatList[1]);
       messages = jsonDecode(tmpDatList[2]);
+
+      print("--->${tmpmsg.length}--->${messages.length}");
+      if (tmpmsg.length == messages.length) {
+        recordState = 5;
+      }
       currentIndex = messages.length - 1;
     }
   }
 
-  Future<void> finshDilog() async {
-    showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-            backgroundColor: const Color(0xfff8f8f8),
-            actionsAlignment: MainAxisAlignment.spaceAround,
-            contentPadding: const EdgeInsets.all(20),
-            title: const Icon(
-              Icons.done,
-              color: Color(0xff6f61e8),
-              size: 50,
-            ),
-            actions: [
-              FilledButton(
-                  onPressed: () {
-                    setState(() {
-                      loading = false;
-                    });
-                  },
-                  child: const Text("Home")),
-              FilledButton(
-                  onPressed: () {
-                    //
-                    savedata();
-                    // Navigator.pop(context);
-                  },
-                  child: const Text("Save"))
-            ],
-            content: const Text(
-              "You Have Compeleted",
-              textAlign: TextAlign.center,
-            )));
-  }
+
 
   Future<void> checktext() async {
     showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-          backgroundColor: const Color(0xfff8f8f8),
-          actionsAlignment: MainAxisAlignment.spaceAround,
-          contentPadding: const EdgeInsets.all(20),
-          title: const Icon(
-            Icons.emoji_events,
-            color: Color(0xff6f61e8),
-            size: 50,
-          ),
-          actions: [
-            FilledButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  setState(() {
-                    recordState = 0;
-                  });
-                },
-                child: const Text("Restart")),
-            FilledButton(
-                onPressed: () {
-                  if (currentIndex + 2 < tmpmsg.length - 1) {
-                    setState(() {
-                      messages.add({"text": _lastWords, "isSentByMe": true});
+        context: context,
+        builder: (context) => AlertDialog(
+              backgroundColor: const Color(0xfff8f8f8),
+              actionsAlignment: MainAxisAlignment.spaceAround,
+              contentPadding: const EdgeInsets.all(20),
+              title: const Icon(
+                Icons.emoji_events,
+                color: Color(0xff6f61e8),
+                size: 50,
+              ),
+              actions: [
+                FilledButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      setState(() {
+                        recordState = 0;
+                      });
+                    },
+                    child: const Text("Restart")),
+                FilledButton(
+                    onPressed: () {
+                      if (currentIndex + 2 < tmpmsg.length - 1) {
+                        setState(() {
+                          messages
+                              .add({"text": _lastWords, "isSentByMe": true});
 
-                      messages.add(tmpmsg[currentIndex + 2]);
+                          messages.add(tmpmsg[currentIndex + 2]);
 
-                      currentIndex += 2;
-                      // _lastWords = tmpmsg[currentIndex + 1]["text"];
-                    });
-                  } else if (currentIndex < tmpmsg.length - 1) {
-                    setState(() {
-                      messages.add({"text": _lastWords, "isSentByMe": true});
+                          currentIndex += 2;
+                          // _lastWords = tmpmsg[currentIndex + 1]["text"];
+                        });
+                      } else if (currentIndex < tmpmsg.length - 1) {
+                        setState(() {
+                          messages
+                              .add({"text": _lastWords, "isSentByMe": true});
 
-                      _lastWords = "";
-                    });
-                    finshDilog();
-                  }
+                          _lastWords = "";
+                        });
+                       
+                      }
 
-                  Navigator.pop(context);
-                },
-                child: const Text("Skip"))
-          ],
-          content: PrettyDiffText(
-              textAlign: TextAlign.center,
-              oldText: _lastWords.toLowerCase(),
-              newText: tmpmsg[currentIndex + 1]["text"].toLowerCase() .replaceAll(RegExp(r'[^a-z ]'), '')),
-      ));
+                      Navigator.pop(context);
+                    },
+                    child: const Text("Skip"))
+              ],
+              content: PrettyDiffText(
+                  textAlign: TextAlign.center,
+                  oldText: _lastWords.toLowerCase(),
+                  newText: tmpmsg[currentIndex + 1]["text"]
+                      .toLowerCase()
+                      .replaceAll(RegExp(r'[^a-z ]'), '')),
+            ));
   }
 
   int recordState = 0;
@@ -358,19 +350,16 @@ await showDialog(
                 )
               : Column(
                   children: [
-                   
-                   
-                   Visibility(
-                    visible: recordState==1,
-                     child: Container(
-                      padding: const EdgeInsets.all(5),
-                     
-                     child: Text(_lastWords,style: const TextStyle(
-                       color: Colors.white
-                     ),),
-                     ),
-                   )
-,                    
+                    Visibility(
+                      visible: recordState == 1,
+                      child: Container(
+                        padding: const EdgeInsets.all(5),
+                        child: Text(
+                          _lastWords == "" ? "Speak Now ..." : _lastWords,
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
                     Expanded(
                       child: ListView.builder(
                         itemCount: messages.length,
@@ -392,18 +381,30 @@ await showDialog(
                       child: Row(
                         children: [
                           Expanded(
-                              child: Text(
-                            "${tmpmsg[currentIndex + 1]["text"] ?? ""}",
-                            maxLines: 3,
-                            style: const TextStyle(color: Colors.white),
-                          )
-                              ),
+                              child: messages.length==tmpmsg.length
+                                  ? const Text(
+                                      "Task Finished !",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Colors.green,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )
+                                  : Text(
+                                      "${tmpmsg[currentIndex + 1]["text"] ?? ""}",
+                                      maxLines: 3,
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    )),
                           switch (recordState) {
                             0 => IconButton(
                                 icon:
                                     const Icon(Icons.mic, color: Colors.white),
                                 onPressed: () {
+                                  _lastWords = "";
                                   _startListening();
+
                                   setState(() {
                                     recordState = 1;
                                   });
@@ -438,14 +439,14 @@ await showDialog(
                                 icon:
                                     const Icon(Icons.send, color: Colors.white),
                                 onPressed: () {
+                                  recordState = 0;
                                   print(
                                       "$currentIndex --${tmpmsg.length}--->${tmpmsg[currentIndex + 1]["text"]}");
                                   if (_lastWords.toLowerCase() ==
-                                      ( tmpmsg[currentIndex + 1]["text"]
-                                              as String) 
-                                          .toLowerCase().replaceAll(RegExp(r'[^a-z ]'), '')) {
-                                   
-
+                                      (tmpmsg[currentIndex + 1]["text"]
+                                              as String)
+                                          .toLowerCase()
+                                          .replaceAll(RegExp(r'[^a-z ]'), '')) {
                                     if (currentIndex + 2 < tmpmsg.length - 1) {
                                       setState(() {
                                         messages.add(tmpmsg[currentIndex + 1]);
@@ -461,10 +462,8 @@ await showDialog(
                                         tmpmsg.length - 1) {
                                       setState(() {
                                         messages.add(tmpmsg[currentIndex + 1]);
-
-                                        _lastWords = "";
                                       });
-                                      finshDilog();
+                                  
                                     }
 
                                     // }
@@ -481,7 +480,7 @@ await showDialog(
                                   // _sendMessage();
 
                                   // setState(() {
-                                  //   recordState = 0;
+                                  //   _lastWords="";
                                   // });
                                 },
                               ))
