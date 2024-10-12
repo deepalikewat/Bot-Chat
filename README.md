@@ -30,13 +30,12 @@
 
 - **Flutter Framework**: Chosen for its cross-platform support and rich UI capabilities.
 - **Speech-to-Text Integration**: Helps users get real-time feedback, enhancing their speaking skills.
--**Dummy API for Starters**: Makes the app more interactive by guiding users through conversations.
+- **Dummy API for Starters**: Makes the app more interactive by guiding users through conversations.
 - **Save Chat Feature**: Allows users to revisit conversations, track progress, and learn from feedback.
 
 ---
 ## 📸 Screenshots:
 
-**Actual app looks even better! 😃**
 ![Alt s1](images/i7.png)
 ![Alt s2](images/i8.png)
 ![Alt s3](images/i9.png)

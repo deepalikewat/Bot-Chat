@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:http/http.dart' as http;
@@ -206,7 +207,7 @@ class _ConversationPageState extends State<ConversationPage> {
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.pop(context); //close Dialog
+                  Navigator.pop(context); 
                 },
                 child: const Text('OK'),
               )
@@ -398,17 +399,20 @@ class _ConversationPageState extends State<ConversationPage> {
                                           const TextStyle(color: Colors.white),
                                     )),
                           switch (recordState) {
-                            0 => IconButton(
-                                icon:
-                                    const Icon(Icons.mic, color: Colors.white),
-                                onPressed: () {
-                                  _lastWords = "";
-                                  _startListening();
-
-                                  setState(() {
-                                    recordState = 1;
-                                  });
-                                }),
+                            0 => Visibility(
+                              visible: messages.length!=tmpmsg.length,
+                              child: IconButton(
+                                  icon:
+                                      const Icon(Icons.mic, color: Colors.white),
+                                  onPressed: () {
+                                    _lastWords = "";
+                                    _startListening();
+                              
+                                    setState(() {
+                                      recordState = 1;
+                                    });
+                                  }),
+                            ),
                             1 => IconButton(
                                 icon: const Icon(
                                   Icons.stop_circle,
@@ -433,8 +437,10 @@ class _ConversationPageState extends State<ConversationPage> {
                             // TODO: Handle this case.
                             int() => const Text("x"),
                           },
+                           
                           Visibility(
-                              visible: recordState == 2,
+                              visible: recordState == 2 ,
+
                               child: IconButton(
                                 icon:
                                     const Icon(Icons.send, color: Colors.white),
